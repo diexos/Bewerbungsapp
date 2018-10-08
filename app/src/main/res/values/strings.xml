@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Bewerbungsapp</string>
+    <string name="website_url">https://tu-freiberg.de/studium/studienangebot/studiengaenge</string>
+    <string name="website_domain">tu-freiberg.de</string>
+    <string name="bewerben">bewerben</string>
+    <string name="address">Studierendenbüro TU Bergakademie Freiberg Universitätshauptgebäude Akademiestraße 6 09599 Freiberg</string>
+    <string name="time">Sprechzeiten Montag bis Donnerstag 12.30 - 15.30 Uhr und nach Vereinbarung</string>
+    <string name="title_activity_maps">Map</string>
+</resources>
