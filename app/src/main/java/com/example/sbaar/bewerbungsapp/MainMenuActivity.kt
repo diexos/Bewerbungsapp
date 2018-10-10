@@ -1,21 +1,19 @@
 package com.example.sbaar.bewerbungsapp
 
 
-import android.content.Intent
-import android.net.Uri
+
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.*
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_subject.*
-import kotlinx.android.synthetic.main.apply.*
 import kotlinx.android.synthetic.main.subject_child.view.*
+import kotlinx.android.synthetic.main.apply.*
 
 
 
@@ -33,6 +31,8 @@ class MainMenuActivity : AppCompatActivity() {
         LoadData()
         subject_list.layoutManager = LinearLayoutManager(this)
         subject_list.adapter = SubjectAdapter(displayList, this)
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -125,6 +125,7 @@ class MainMenuActivity : AppCompatActivity() {
         transaction.replace(R.id.fragment_holder, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+
     }
 
     fun ShowContact() {
@@ -135,6 +136,14 @@ class MainMenuActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+
+   fun ShowDataCheck() {
+        val transaction = manager.beginTransaction()
+        val fragment = DataCheckFragment()
+        transaction.replace(R.id.fragment_holder, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 
 
 

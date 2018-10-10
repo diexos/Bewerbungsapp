@@ -23,7 +23,7 @@ class ContactFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d(TAG,"onCrateView")
+        Log.d(TAG,"onCreateView")
         return inflater!!.inflate(R.layout.contact,container,false)
     }
 
