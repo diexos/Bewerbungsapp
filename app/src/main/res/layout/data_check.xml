@@ -11,17 +11,68 @@
     android:focusable="true">
 
 
-    <CheckedTextView
-        android:id="@+id/checkedTextView"
+    <CheckBox
+        android:id="@+id/cb_id_front"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="350dp"
-        android:text="CheckedTextView"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Ausweis Vorderseite"
+        app:layout_constraintBottom_toTopOf="@+id/cb_id_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <CheckBox
+        android:id="@+id/cb_id_back"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Ausweis Rückseite"
+        app:layout_constraintBottom_toTopOf="@+id/cb_cert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_id_front" />
+
+    <CheckBox
+        android:id="@+id/cb_cert"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Zeugnis"
+        app:layout_constraintBottom_toTopOf="@+id/cb_illness"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_id_back" />
+
+    <CheckBox
+        android:id="@+id/cb_illness"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="200dp"
+        android:text="Krankenversicherung"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/cb_cert" />
+
+    <Button
+        android:id="@+id/bt_ready"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="150dp"
+        android:text="Versenden"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_illness" />
+
 </android.support.constraint.ConstraintLayout>

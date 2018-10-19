@@ -2,11 +2,14 @@ package com.example.sbaar.bewerbungsapp
 
 
 
+import android.content.DialogInterface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
@@ -34,6 +37,10 @@ class MainMenuActivity : AppCompatActivity() {
 
 
     }
+
+
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
@@ -78,6 +85,22 @@ class MainMenuActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.menu_contact -> ShowContact()
+            R.id.menu_status ->{
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Bewerbungsstatus")
+                builder.setMessage("Der Status deiner Bewerbung ist _______ .")
+                builder.setPositiveButton("Ja"){dialog, which ->
+                    Toast.makeText(applicationContext,"bestätigt.",Toast.LENGTH_SHORT).show()
+                }
+                builder.setNegativeButton("Nein"){dialog,which ->
+                    Toast.makeText(applicationContext,"abgelehnt.",Toast.LENGTH_SHORT).show()
+                }
+                builder.setNeutralButton("Abbrechen"){_,_ ->
+                    Toast.makeText(applicationContext,"abgebrochen.",Toast.LENGTH_SHORT).show()
+                }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
             else -> super.onOptionsItemSelected(item)
         }
         return true
