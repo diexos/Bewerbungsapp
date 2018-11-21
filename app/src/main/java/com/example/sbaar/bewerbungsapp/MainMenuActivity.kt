@@ -2,38 +2,43 @@ package com.example.sbaar.bewerbungsapp
 
 
 
-import android.content.DialogInterface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.*
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.example.sbaar.bewerbungsapp.R.string.website_url
 import kotlinx.android.synthetic.main.activity_subject.*
+import kotlinx.android.synthetic.main.activity_subject.view.*
 import kotlinx.android.synthetic.main.subject_child.view.*
-import kotlinx.android.synthetic.main.apply.*
-
-
+import org.json.JSONException
+import org.json.JSONObject
 
 
 class MainMenuActivity : AppCompatActivity() {
 
-    var subjects: MutableList<String> = ArrayList()
-    var displayList: MutableList<String> = ArrayList()
+    var subjects: MutableList<Subject> = ArrayList()
+    var displayList: MutableList<Subject> = ArrayList()
     val manager = supportFragmentManager
-
+    val url_root = "http://192.168.178.56/bewerbungsdb/v1/?op="
+    val url_get = url_root + "getSubject"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subject)
+
         LoadData()
         subject_list.layoutManager = LinearLayoutManager(this)
-        subject_list.adapter = SubjectAdapter(displayList, this)
+        subject_list.adapter =  SubjectAdapter(displayList, this)
 
 
     }
@@ -48,7 +53,7 @@ class MainMenuActivity : AppCompatActivity() {
         if (searchItem != null) {
             val searchView = searchItem.actionView as SearchView
             val editext = searchView.findViewById<EditText>(android.support.v7.appcompat.R.id.search_src_text)
-            editext.hint = "Search here..."
+            editext.hint = "Suche"
 
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
@@ -61,7 +66,7 @@ class MainMenuActivity : AppCompatActivity() {
                     if (newText.isNotEmpty()) {
                         val search = newText.toLowerCase()
                         subjects.forEach {
-                            if (it.toLowerCase().contains(search)) {
+                            if (it.subject_name.toLowerCase().contains(search)) {
                                 displayList.add(it)
                             }
                         }
@@ -106,7 +111,7 @@ class MainMenuActivity : AppCompatActivity() {
         return true
     }
 
-    class SubjectAdapter(items: List<String>, ctx: MainMenuActivity) : RecyclerView.Adapter<SubjectAdapter.ViewHolder>() {
+    class SubjectAdapter(items: List<Subject>, ctx: MainMenuActivity) : RecyclerView.Adapter<SubjectAdapter.ViewHolder>() {
 
         private var list = items
         private var context = ctx
@@ -116,7 +121,9 @@ class MainMenuActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.name.text = list[position]
+            val subj = list[position]
+            holder.name.text = subj.subject_name
+            holder.link = subj.link
             holder.itemView.setOnClickListener {
                 Toast.makeText(context, "${holder.name.text}", Toast.LENGTH_LONG).show()
                 context.ShowApply()
@@ -131,15 +138,42 @@ class MainMenuActivity : AppCompatActivity() {
 
 
         class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-            val name = v.subject_name
+            val name = v.subject_name_Id
+            var link = ""
         }
     }
 
     private fun LoadData() {
-        subjects.add("Angewandte Mathematik")
-        subjects.add("Angewandte Informatik")
-        subjects.add("Chemie")
-        displayList.addAll(subjects)
+        val stringRequest = StringRequest(Request.Method.GET,
+                url_get,
+                Response.Listener<String> { s ->
+                    try {
+                        val obj = JSONObject(s)
+                        if (!obj.getBoolean("error")) {
+                            val array = obj.getJSONArray("subject")
+                            for (i in 0 until array.length() - 1) {
+                                val objectSubject = array.getJSONObject(i)
+                                val subj = Subject(
+                                        objectSubject.getLong("ID"),
+                                        objectSubject.getLong("Abschluss"),
+                                        objectSubject.getString("Name"),
+                                        objectSubject.getLong("Fakultät"),
+                                        objectSubject.getString("Link")
+                                )
+                                displayList.add(subj)
+
+                            }
+                        } else {
+                            Toast.makeText(this, obj.getString("message"), Toast.LENGTH_LONG).show()
+                        }
+
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+
+                    }
+                }, Response.ErrorListener { volleyError -> Toast.makeText(this, volleyError.message, Toast.LENGTH_LONG).show() })
+        val requestQueue = Volley.newRequestQueue(this)
+        requestQueue.add<String>(stringRequest)
     }
 
     fun ShowApply() {
