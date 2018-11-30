@@ -1,3 +1,3 @@
 package com.example.sbaar.bewerbungsapp
 
-data class Subject (val _id: Long, val degree: Long,val subject_name: String, val fakultät: Long, val link: String )
+data class Subject (var _id: Int = 0, var degree: Int = 0,var subject_name: String = "", var fakultät: Int = 0, var link: String = "" )

@@ -20,6 +20,7 @@ class ApplyFragment : Fragment() {
 
 
     override fun onAttach(context: Context?) {
+
         Log.d(TAG,"onAttach")
         super.onAttach(context)
     }
@@ -38,7 +39,7 @@ class ApplyFragment : Fragment() {
         val v = inflater.inflate(R.layout.apply, container, false)
 
         var mWebView: WebView =  v.findViewById(R.id.wV_Info)
-        mWebView.loadUrl(getString(R.string.website_url))
+        mWebView.loadUrl((activity as MainMenuActivity).getLink())
         // Force links and redirects to open in the WebView instead of in a browser
         mWebView.setWebViewClient(WebViewClient())
         val btn_click: Button = v.findViewById(R.id.bt_apply)
