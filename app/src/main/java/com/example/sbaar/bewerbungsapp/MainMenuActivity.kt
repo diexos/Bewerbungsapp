@@ -2,33 +2,27 @@ package com.example.sbaar.bewerbungsapp
 
 
 
-import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
+
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.*
-import android.webkit.WebView
 import android.widget.EditText
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.sbaar.bewerbungsapp.R.id.subject_list
-import com.example.sbaar.bewerbungsapp.R.string.website_url
 import kotlinx.android.synthetic.main.activity_subject.*
-import kotlinx.android.synthetic.main.activity_subject.view.*
 import kotlinx.android.synthetic.main.subject_child.view.*
 import org.json.JSONException
 import org.json.JSONObject
+import android.content.Intent
+import android.view.View.GONE
+import android.widget.ImageView
 
 
 class MainMenuActivity : AppCompatActivity() {
@@ -36,21 +30,26 @@ class MainMenuActivity : AppCompatActivity() {
     var subjects: MutableList<Subject> = ArrayList()
     var displayList: MutableList<Subject> = ArrayList()
     val manager = supportFragmentManager
-    val url_root = "http://192.168.178.56/bewerbungsdb/v1/?op="
+    val url_root = "http://192.168.178.30/bewerbungsdb/v1/?op="
     val url_get = url_root + "getSubject"
+
     lateinit var db:DBHelper
-    private val TAG = "PermissionDemo"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subject)
+        val image : ImageView = findViewById(R.id.imageView2)
 
 
         db = DBHelper(this)
         LoadData()
         subject_list.layoutManager = LinearLayoutManager(this)
         subject_list.adapter =  SubjectAdapter(displayList, this)
-
+        image.setOnClickListener { image.visibility = GONE
+            displayList.clear()
+            displayList.addAll(subjects)
+            subject_list.adapter?.notifyDataSetChanged()}
 
     }
 
@@ -93,7 +92,9 @@ class MainMenuActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -133,9 +134,10 @@ class MainMenuActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val subj = list[position]
             holder.name.text = subj.subject_name
-            context.links = subj.link
+            holder.link = subj.link
             holder.itemView.setOnClickListener {
                 Toast.makeText(context, "${holder.name.text}", Toast.LENGTH_LONG).show()
+                context.links = holder.link
                 context.ShowApply()
 
             }

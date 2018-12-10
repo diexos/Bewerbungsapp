@@ -1,32 +1,28 @@
 package com.example.sbaar.bewerbungsapp
 
+
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import kotlinx.android.synthetic.main.data_check.*
+import android.widget.ImageView
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.jar.Manifest
 
 
 class DataCheckFragment : Fragment() {
-
     val TAG = "DataCheckFragment"
-
     override fun onAttach(context: Context?) {
         Log.d(TAG, "onAttach")
         super.onAttach(context)
@@ -45,8 +41,9 @@ class DataCheckFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG, "onCreateView")
         val v = inflater.inflate(R.layout.data_check, container, false)
-        val cb_click: CheckBox = v.findViewById(R.id.cb_id_front)
-            cb_click.setOnClickListener{if (cb_click.isChecked){dispatchTakePictureIntent()}}
+        val iV_click: ImageView = v.findViewById(R.id.imageView19)
+        iV_click.setOnClickListener{dispatchTakePictureIntent()
+                                    setPic(iV_click)}
         return v
     }
 
@@ -94,15 +91,36 @@ class DataCheckFragment : Fragment() {
                             it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                    this.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
                 }
             }
         }
 
     }
+    private fun setPic(v:ImageView) {
+        // Get the dimensions of the View
+        val targetW: Int = v.width
+        val targetH: Int = v.height
 
+        val bmOptions = BitmapFactory.Options().apply {
+            // Get the dimensions of the bitmap
+            inJustDecodeBounds = true
+            BitmapFactory.decodeFile(mCurrentPhotoPath, this)
+            val photoW: Int = outWidth
+            val photoH: Int = outHeight
 
+            // Determine how much to scale down the image
+            val scaleFactor: Int = Math.min(photoW / targetW, photoH / targetH)
 
+            // Decode the image file into a Bitmap sized to fill the View
+            inJustDecodeBounds = false
+            inSampleSize = scaleFactor
+
+        }
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions)?.also { bitmap ->
+            v.setImageBitmap(bitmap)
+        }
+    }
 
 }
 
