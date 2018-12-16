@@ -3,6 +3,8 @@ package com.example.sbaar.bewerbungsapp
 
 
 
+import android.content.Context
+import android.graphics.drawable.ClipDrawable.VERTICAL
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -20,9 +22,9 @@ import kotlinx.android.synthetic.main.activity_subject.*
 import kotlinx.android.synthetic.main.subject_child.view.*
 import org.json.JSONException
 import org.json.JSONObject
-import android.content.Intent
 import android.view.View.GONE
 import android.widget.ImageView
+
 
 
 class MainMenuActivity : AppCompatActivity() {
@@ -33,19 +35,15 @@ class MainMenuActivity : AppCompatActivity() {
     val url_root = "http://192.168.178.30/bewerbungsdb/v1/?op="
     val url_get = url_root + "getSubject"
 
-    lateinit var db:DBHelper
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subject)
         val image : ImageView = findViewById(R.id.imageView2)
-
-
-        db = DBHelper(this)
         LoadData()
         subject_list.layoutManager = LinearLayoutManager(this)
         subject_list.adapter =  SubjectAdapter(displayList, this)
+
         image.setOnClickListener { image.visibility = GONE
             displayList.clear()
             displayList.addAll(subjects)
@@ -92,9 +90,7 @@ class MainMenuActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
+
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -134,6 +130,8 @@ class MainMenuActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val subj = list[position]
             holder.name.text = subj.subject_name
+            when (subj.degree){
+            }
             holder.link = subj.link
             holder.itemView.setOnClickListener {
                 Toast.makeText(context, "${holder.name.text}", Toast.LENGTH_LONG).show()
@@ -152,6 +150,7 @@ class MainMenuActivity : AppCompatActivity() {
         class ViewHolder(v: View) : RecyclerView.ViewHolder(v){
             val name = v.subject_name_Id
             var link = ""
+
 
         }
     }
@@ -177,8 +176,9 @@ class MainMenuActivity : AppCompatActivity() {
                                         objectSubject.getInt("Fakultät"),
                                         objectSubject.getString("Link")
                                 )
-                                displayList.add(subj)
+
                                 subjects.add(subj)
+                                displayList.add(subj)
                             }
                         } else {
                             Toast.makeText(this, obj.getString("message"), Toast.LENGTH_LONG).show()

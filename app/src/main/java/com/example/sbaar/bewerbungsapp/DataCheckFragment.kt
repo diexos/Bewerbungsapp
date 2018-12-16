@@ -42,15 +42,12 @@ class DataCheckFragment : Fragment() {
         Log.d(TAG, "onCreateView")
         val v = inflater.inflate(R.layout.data_check, container, false)
         val iV_click: ImageView = v.findViewById(R.id.imageView19)
-        iV_click.setOnClickListener{dispatchTakePictureIntent()
-                                    setPic(iV_click)}
+        iV_click.setOnClickListener{dispatchTakePictureIntent(iV_click)
+                                    setPic(iV_click)
+                                    }
         return v
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
-    }
 
   lateinit var mCurrentPhotoPath: String
 
@@ -71,7 +68,7 @@ class DataCheckFragment : Fragment() {
 
     val REQUEST_TAKE_PHOTO = 1
 
-    private fun dispatchTakePictureIntent() {
+    private fun dispatchTakePictureIntent(v:ImageView) {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
             takePictureIntent.resolveActivity((activity as MainMenuActivity).packageManager)?.also {
@@ -91,12 +88,14 @@ class DataCheckFragment : Fragment() {
                             it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    this.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                    (activity as MainMenuActivity).startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
                 }
             }
         }
 
     }
+
+
     private fun setPic(v:ImageView) {
         // Get the dimensions of the View
         val targetW: Int = v.width
