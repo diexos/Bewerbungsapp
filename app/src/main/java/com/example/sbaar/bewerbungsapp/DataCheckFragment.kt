@@ -1,9 +1,12 @@
 package com.example.sbaar.bewerbungsapp
 
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -15,6 +18,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
+import kotlinx.android.synthetic.main.data_check.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -23,6 +28,7 @@ import java.util.*
 
 class DataCheckFragment : Fragment() {
     val TAG = "DataCheckFragment"
+    var pic_update = 0
     override fun onAttach(context: Context?) {
         Log.d(TAG, "onAttach")
         super.onAttach(context)
@@ -32,20 +38,41 @@ class DataCheckFragment : Fragment() {
         Log.d(TAG, "onCreate")
 
 
-
-
-
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG, "onCreateView")
+
         val v = inflater.inflate(R.layout.data_check, container, false)
         val iV_click: ImageView = v.findViewById(R.id.imageView19)
+        val iV_click2: ImageView = v.findViewById(R.id.imageView20)
+        val iV_click3: ImageView = v.findViewById(R.id.imageView21)
+        val iV_click4: ImageView = v.findViewById(R.id.imageView22)
         iV_click.setOnClickListener{dispatchTakePictureIntent(iV_click)
-                                    setPic(iV_click)
-                                    }
+                                    pic_update = 1 }
+        iV_click2.setOnClickListener{dispatchTakePictureIntent(iV_click2)
+            pic_update = 2 }
+        iV_click3.setOnClickListener{dispatchTakePictureIntent(iV_click3)
+            pic_update = 3 }
+        iV_click4.setOnClickListener{dispatchTakePictureIntent(iV_click4)
+            pic_update = 4 }
+
+
         return v
+    }
+
+    override fun onResume() {
+        when(pic_update)
+        {
+            1 -> setPic(imageView19)
+            2 -> setPic(imageView20)
+            3 -> setPic(imageView21)
+            4 -> setPic(imageView22)
+            else -> pic_update = 0
+
+        }
+        super.onResume()
     }
 
 
@@ -63,6 +90,7 @@ class DataCheckFragment : Fragment() {
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
             mCurrentPhotoPath = absolutePath
+
         }
     }
 
@@ -88,7 +116,7 @@ class DataCheckFragment : Fragment() {
                             it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    (activity as MainMenuActivity).startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
                 }
             }
         }
@@ -96,12 +124,13 @@ class DataCheckFragment : Fragment() {
     }
 
 
+
     private fun setPic(v:ImageView) {
         // Get the dimensions of the View
         val targetW: Int = v.width
         val targetH: Int = v.height
 
-        val bmOptions = BitmapFactory.Options().apply {
+        val bmOptions =BitmapFactory.Options().apply {
             // Get the dimensions of the bitmap
             inJustDecodeBounds = true
             BitmapFactory.decodeFile(mCurrentPhotoPath, this)
@@ -118,8 +147,10 @@ class DataCheckFragment : Fragment() {
         }
         BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions)?.also { bitmap ->
             v.setImageBitmap(bitmap)
+
         }
     }
+
 
 }
 
