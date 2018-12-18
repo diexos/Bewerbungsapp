@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
@@ -28,8 +29,9 @@ class ApplyFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG,"onCreate")
         super.onCreate(savedInstanceState)
-
+        setHasOptionsMenu(true)
     }
+
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -50,7 +52,10 @@ class ApplyFragment : Fragment() {
 
     }
 
-
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.menu_search).isVisible = false
+        super.onPrepareOptionsMenu(menu)
+    }
 
 
 }

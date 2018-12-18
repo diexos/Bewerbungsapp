@@ -3,7 +3,14 @@
     <string name="website_url">https://tu-freiberg.de/studium/studienangebot/studiengaenge</string>
     <string name="website_domain">tu-freiberg.de</string>
     <string name="bewerben">bewerben</string>
-    <string name="address">Studierendenbüro TU Bergakademie Freiberg Universitätshauptgebäude Akademiestraße 6 09599 Freiberg</string>
-    <string name="time">Sprechzeiten Montag bis Donnerstag 12.30 - 15.30 Uhr und nach Vereinbarung</string>
+    <string name="address">Studierendenbüro\n \n
+                           TU Bergakademie Freiberg \n
+                           Universitätshauptgebäude\n
+                           Akademiestraße 6\n
+                           09599 Freiberg\n</string>
+    <string name="time"><b>Sprechzeiten</b> \n \n
+                        Montag bis Donnerstag \n
+                        12.30 - 15.30 Uhr \n
+                        und nach Vereinbarung \n </string>
     <string name="title_activity_maps">Map</string>
 </resources>

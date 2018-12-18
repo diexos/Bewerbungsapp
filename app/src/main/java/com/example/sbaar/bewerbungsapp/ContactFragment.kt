@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 
@@ -20,48 +21,19 @@ class ContactFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG,"onCreate")
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG,"onCreateView")
-        return inflater!!.inflate(R.layout.contact,container,false)
+        val v = inflater.inflate(R.layout.contact, container, false)
+        return v
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG,"onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.menu_search).isVisible = false
+        super.onPrepareOptionsMenu(menu)
     }
-
-    override fun onStart() {
-        Log.d(TAG,"onStart")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d(TAG,"onResume")
-        super.onResume()
-    }
-
-    override fun onStop() {
-        Log.d(TAG,"onStop")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG,"onDestroyView")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d(TAG,"onDestroy")
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        Log.d(TAG,"onDetach")
-        super.onDetach()
-    }
-
 
 
 

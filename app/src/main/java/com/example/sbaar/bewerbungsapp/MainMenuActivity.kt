@@ -43,7 +43,6 @@ class MainMenuActivity : AppCompatActivity() {
         LoadData()
         subject_list.layoutManager = LinearLayoutManager(this)
         subject_list.adapter =  SubjectAdapter(displayList, this)
-
         image.setOnClickListener { image.visibility = GONE
             displayList.clear()
             displayList.addAll(subjects)
@@ -57,6 +56,7 @@ class MainMenuActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
         val searchItem = menu.findItem(R.id.menu_search)
+        val image : ImageView = findViewById(R.id.imageView2)
         if (searchItem != null) {
             val searchView = searchItem.actionView as SearchView
             val editext = searchView.findViewById<EditText>(android.support.v7.appcompat.R.id.search_src_text)
@@ -78,6 +78,7 @@ class MainMenuActivity : AppCompatActivity() {
                             }
                         }
                     } else {
+                        image.visibility = GONE
                         displayList.addAll(subjects)
                     }
                     subject_list.adapter?.notifyDataSetChanged()

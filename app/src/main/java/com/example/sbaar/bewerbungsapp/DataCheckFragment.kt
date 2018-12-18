@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -36,7 +37,7 @@ class DataCheckFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
-
+        setHasOptionsMenu(true)
 
         super.onCreate(savedInstanceState)
     }
@@ -61,6 +62,11 @@ class DataCheckFragment : Fragment() {
 
         return v
     }
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.menu_search).isVisible = false
+        super.onPrepareOptionsMenu(menu)
+    }
+
 
     override fun onResume() {
         when(pic_update)
